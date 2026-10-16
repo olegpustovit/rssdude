@@ -28,4 +28,4 @@ The codebase is small on purpose — small enough to read end-to-end if you ever
 
 ## Source
 
-Everything lives at [github.com/OlegHQ/rssdude](https://github.com/OlegHQ/rssdude). Issues and PRs welcome — see the contributing notes in `AGENTS.md`.
+Everything lives at [github.com/olegpustovit/rssdude](https://github.com/olegpustovit/rssdude). Issues and PRs welcome — see the contributing notes in `AGENTS.md`.

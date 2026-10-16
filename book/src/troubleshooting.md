@@ -81,7 +81,7 @@ Token mismatch. Ensure both `~/.rssdude/config.toml` files (server and client) h
 cp ~/.rssdude/rssdude.redb ~/.rssdude/rssdude.redb.broken
 ```
 
-Then file an issue at the [GitHub repo](https://github.com/OlegHQ/rssdude/issues) with the error message. The DB is small enough that you can probably just send it.
+Then file an issue at the [GitHub repo](https://github.com/olegpustovit/rssdude/issues) with the error message. The DB is small enough that you can probably just send it.
 
 To get back up and running fast, restore from your most recent backup, or:
 
@@ -102,7 +102,7 @@ The folder id you passed doesn't exist. `rssdude folder list --json` to see the 
 
 ## Where to file issues
 
-[github.com/OlegHQ/rssdude/issues](https://github.com/OlegHQ/rssdude/issues). Include:
+[github.com/olegpustovit/rssdude/issues](https://github.com/olegpustovit/rssdude/issues). Include:
 
 - `rssdude --version`
 - the command that failed

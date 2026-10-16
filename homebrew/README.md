@@ -1,12 +1,12 @@
 # Homebrew tap
 
-Files staged here belong in the [`OlegHQ/homebrew-tap`](https://github.com/OlegHQ/homebrew-tap) repo.
+Files staged here belong in the [`olegpustovit/homebrew-tap`](https://github.com/olegpustovit/homebrew-tap) repo.
 After a release, copy `Formula/rssdude.rb` into that repo with the real SHA256s filled in.
 
 ## End-user install
 
 ```bash
-brew tap OlegHQ/tap
+brew tap olegpustovit/tap
 brew install rssdude
 ```
 

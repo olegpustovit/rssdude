@@ -11,7 +11,7 @@ Everything lives in `~/.rssdude/`. No accounts, no cloud, nothing phones home.
 Apple Silicon mac, the easy way:
 
 ```bash
-brew tap OlegHQ/tap
+brew tap olegpustovit/tap
 brew install rssdude
 ```
 
@@ -19,7 +19,7 @@ From source on macOS or Linux:
 
 ```bash
 brew install libiconv     # macOS only — keg-only, the linker needs it
-git clone https://github.com/OlegHQ/rssdude && cd rssdude
+git clone https://github.com/olegpustovit/rssdude && cd rssdude
 make install              # drops the binary in ~/.cargo/bin
 ```
 
@@ -45,7 +45,7 @@ Every command takes `--json`. Durations are `humantime` style: `24h`, `7d`, `2w`
 
 ## Documentation
 
-The full guide lives at **[oleghq.github.io/rssdude](https://oleghq.github.io/rssdude)** — install, TUI keybindings, every CLI flag, multi-machine server setup, OPML migration, themes, backup, troubleshooting.
+The full guide lives at **[olegpustovit.github.io/rssdude](https://olegpustovit.github.io/rssdude)** — install, TUI keybindings, every CLI flag, multi-machine server setup, OPML migration, themes, backup, troubleshooting.
 
 You can also build it locally:
 

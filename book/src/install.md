@@ -3,7 +3,7 @@
 ## Apple Silicon mac (Homebrew)
 
 ```bash
-brew tap OlegHQ/tap
+brew tap olegpustovit/tap
 brew install rssdude
 ```
 
@@ -13,7 +13,7 @@ That's the whole thing. The tap pulls a prebuilt `aarch64-apple-darwin` binary a
 
 ```bash
 brew install libiconv     # keg-only, the linker needs it
-git clone https://github.com/OlegHQ/rssdude
+git clone https://github.com/olegpustovit/rssdude
 cd rssdude
 make install              # cargo install --path . into ~/.cargo/bin
 ```
@@ -23,7 +23,7 @@ The `LIBRARY_PATH=/opt/homebrew/opt/libiconv/lib` is set automatically by the Ma
 ## From source — Linux
 
 ```bash
-git clone https://github.com/OlegHQ/rssdude
+git clone https://github.com/olegpustovit/rssdude
 cd rssdude
 cargo install --path .
 ```
