@@ -13,7 +13,7 @@ brew install rssdude
 ## Release workflow
 
 1. Push a `v*` tag on this repo. `.github/workflows/release.yml` builds
-   `aarch64-apple-darwin` and `x86_64-apple-darwin` binaries and attaches them
+   an `aarch64-apple-darwin` binary and attaches them
    to the GitHub release.
 2. Grab the SHA256s from the `*.sha256` files in the release.
 3. Update `Formula/rssdude.rb` in the tap repo with the new `version` and SHAs,

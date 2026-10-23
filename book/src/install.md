@@ -7,20 +7,20 @@ brew tap olegpustovit/tap
 brew install rssdude
 ```
 
-That's the whole thing. The tap pulls a prebuilt `aarch64-apple-darwin` binary attached to the latest GitHub release.
+The tap installs its pinned release version, not necessarily the newest GitHub release. The checked-in formula targets Apple Silicon; confirm the active tap formula before installation. Homebrew installation was not tested in the local documentation check.
 
-## From source — macOS
+## From source on macOS
 
 ```bash
 brew install libiconv     # keg-only, the linker needs it
 git clone https://github.com/olegpustovit/rssdude
 cd rssdude
-make install              # cargo install --path . into ~/.cargo/bin
+make install              # cargo install --locked --path . into ~/.cargo/bin
 ```
 
 The `LIBRARY_PATH=/opt/homebrew/opt/libiconv/lib` is set automatically by the Makefile. If you build with bare `cargo build` outside the Makefile, you'll need to export it yourself.
 
-## From source — Linux
+## From source on Linux
 
 ```bash
 git clone https://github.com/olegpustovit/rssdude
@@ -28,7 +28,7 @@ cd rssdude
 cargo install --path .
 ```
 
-No `libiconv` dance needed on Linux — glibc provides it.
+The recorded Linux aarch64 build did not need an extra libiconv path. Other systems were not qualified in that check.
 
 ## Make targets
 
@@ -68,11 +68,11 @@ From source:
 cd rssdude && git pull && make install
 ```
 
-The database format is forward-compatible — your existing `~/.rssdude/rssdude.redb` keeps working across upgrades. If a future version ever needs a migration, the binary handles it on first run.
+The database format is forward-compatible on your existing `~/.rssdude/rssdude.redb` keeps working across upgrades. If a future version ever needs a migration, the binary handles it on first run.
 
 ## Uninstall
 
 ```bash
 make uninstall              # removes the binary
-rm -rf ~/.rssdude            # removes the database & config — only if you really want to
+rm -rf ~/.rssdude            # removes the database & config on only if you really want to
 ```

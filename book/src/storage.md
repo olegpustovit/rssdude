@@ -1,74 +1,49 @@
-# Storage & backup
+# Storage and backup
 
-## Where things live
+## Paths
 
 | Path | Purpose |
-|---|---|
-| `~/.rssdude/rssdude.redb` | The database. One file — copy it to back up. |
-| `~/.rssdude/config.toml` | Optional config (server/client, theme, retention) |
-| `$RSSDUDE_DB_PATH` | Overrides the DB path if you want it somewhere else |
+| --- | --- |
+| `~/.rssdude/rssdude.redb` | Default database |
+| `~/.rssdude/config.toml` | Optional server/client, theme and retention configuration |
+| `~/.rssdude/server.run` | Runtime discovery information for a local server |
+| `$RSSDUDE_DB_PATH` | Overrides the database path only |
 
-## The database
-
-`native_db` on top of `redb` — embedded, typed, transactional. No SQL, no migration scripts, no daemon to babysit. It's a single file; everything you've ever read, starred, or noted is in there.
-
-The file format is forward-compatible. If a future version ever needs a migration, `rssdude` runs it on first launch.
+The database uses native_db over redb. It contains feeds, folders, items and local marks/notes. Database-format compatibility and migration across future releases are not guaranteed by this documentation. Keep a backup before an upgrade.
 
 ## Backup
 
-```bash
-cp ~/.rssdude/rssdude.redb ~/Dropbox/rssdude-backup.redb
-```
+Close the TUI and CLI processes and stop any server using this database before copying it:
 
-That's it. The DB is internally consistent at any moment (the redb format is crash-safe), so you can copy it while `rssdude` is running and the result will be valid.
-
-For automated backups, anything that snapshots that file works:
-
-- a daily `cron` / `launchd` job that copies it somewhere safe
-- `restic` / `borg` / `tarsnap` pointing at `~/.rssdude/`
-- Time Machine
-- a Dropbox/iCloud-synced location (if you don't use server mode — sync conflicts on the live DB are a bad time)
-
-## Restore
-
-```bash
-cp ~/Dropbox/rssdude-backup.redb ~/.rssdude/rssdude.redb
-```
-
-If `rssdude` is running, stop it first.
-
-## Multiple databases
-
-Use `RSSDUDE_DB_PATH` to point at a different file:
-
-```bash
-RSSDUDE_DB_PATH=~/work-feeds.redb rssdude items --unread
-RSSDUDE_DB_PATH=~/personal-feeds.redb rssdude items --unread
-```
-
-Useful for keeping work and personal subscriptions separate without running a server.
-
-## OPML alongside binary backups
-
-Binary backups (`.redb`) preserve everything: feeds, folders, items, marks, notes, fetch state.
-
-OPML exports preserve only feeds and folder structure — no items, no marks, no notes. Use OPML when migrating to or from another reader; use the redb file for actual backups.
-
-```bash
-# Subscriptions backup (portable, human-readable):
-rssdude opml export --output subscriptions.opml
-
-# Full backup (everything):
+```sh
 cp ~/.rssdude/rssdude.redb backup.redb
 ```
 
-## Database location
+Copy config.toml separately if you need it, treating any server token as sensitive. This review does not establish a hot-backup guarantee for copying a live file. Do not synchronize the open database file between machines; use server mode for shared access.
 
-If you want the DB outside the home directory (a network drive, a different disk, an encrypted volume), point `RSSDUDE_DB_PATH` at it permanently:
+## Restore
 
-```bash
-# in ~/.zshrc or ~/.bashrc
-export RSSDUDE_DB_PATH=/Volumes/Encrypted/rssdude.redb
+With all database users stopped, preserve the current file before replacing it with your backup:
+
+```sh
+cp ~/.rssdude/rssdude.redb before-restore.redb
+cp backup.redb ~/.rssdude/rssdude.redb
 ```
 
-The directory must exist; `rssdude` creates the file but not its parent directory.
+Use the path from RSSDUDE_DB_PATH if you override the default. Test a restored copy separately before relying on it; restoration and upgrade compatibility were not exercised in the documentation capture.
+
+## Separate databases
+
+```sh
+RSSDUDE_DB_PATH=/tmp/example-feeds.redb rssdude items --unread
+```
+
+The application creates missing parent directories for the database path. Server routing still takes precedence: a configured server address or reachable server.run can send commands elsewhere even when RSSDUDE_DB_PATH is set. Check both before using an isolated fixture.
+
+## OPML
+
+```sh
+rssdude opml export --output subscriptions.opml
+```
+
+OPML represents subscriptions and folder structure, rather than a full copy of items, marks and notes. Keep the database backup when those records matter. The local fixture check did not exercise OPML import/export.

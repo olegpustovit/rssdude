@@ -1,67 +1,58 @@
 # rssdude
 
-A small, local-first RSS reader written in Rust. One binary; TUI for reading, CLI for scripting, optional HTTP server if you want one box to hold the database.
+An RSS reader with a terminal UI, scripting commands and an optional HTTP server for a shared database. Feeds, items, read/star marks and notes are stored in a local redb file unless the client is configured to use a server.
 
-Everything lives in `~/.rssdude/`. No accounts, no cloud, nothing phones home.
+![Actual CLI output from adding, marking and syncing a fictional local feed](docs/demo/local-feed.png)
 
-![rssdude](demo/rssdude.gif)
+The capture uses a loopback RSS fixture and a disposable database. It verifies two items, read/star persistence and a repeat sync without duplicates. [Reproduce it](docs/demo/README.md).
 
-## Install
+## Build from source
 
-Apple Silicon mac, the easy way:
+Use Rust with Cargo and Git:
 
-```bash
-brew tap olegpustovit/tap
-brew install rssdude
+```sh
+git clone https://github.com/olegpustovit/rssdude.git
+cd rssdude
+cargo build --locked
+./target/debug/rssdude --help
 ```
 
-From source on macOS or Linux:
+The locked build and 25 existing tests passed on Linux aarch64. On macOS, the Makefile adds the Homebrew libiconv path; see [installation](book/src/install.md). macOS and Homebrew installation were not tested here.
 
-```bash
-brew install libiconv     # macOS only — keg-only, the linker needs it
-git clone https://github.com/olegpustovit/rssdude && cd rssdude
-make install              # drops the binary in ~/.cargo/bin
+## Read feeds
+
+```sh
+./target/debug/rssdude add https://hnrss.org/frontpage --tag tech
+./target/debug/rssdude sync
+./target/debug/rssdude items --unread --limit 10
+./target/debug/rssdude
 ```
 
-Make sure `~/.cargo/bin` is on your `PATH`.
+Adding or syncing a feed makes network requests to that URL. Reading full articles can make further requests. The example public feed above was not contacted during this capture. The no-argument command opens the TUI; the new capture exercises the CLI, while existing tests include TUI snapshots.
 
-## Quick start
+Most scripting commands support the global `--json` flag:
 
-```bash
-rssdude add https://hnrss.org/frontpage --tag tech
-rssdude sync
-rssdude                            # open the TUI
+```sh
+./target/debug/rssdude items --unread --json
+./target/debug/rssdude search "worker"
+./target/debug/rssdude status
 ```
 
-Or skip the TUI:
+## Storage and server routing
 
-```bash
-rssdude items --unread --limit 10
-rssdude digest --since 24h
-rssdude trending
-```
+By default the database is `~/.rssdude/rssdude.redb` and configuration is `~/.rssdude/config.toml`. `RSSDUDE_DB_PATH` changes the database path, but does not disable server routing. A configured server address or reachable `~/.rssdude/server.run` can route commands to a server instead. Check those before using an isolated database.
 
-Every command takes `--json`. Durations are `humantime` style: `24h`, `7d`, `2w`, `90m`.
+Server mode is HTTP with optional bearer-token authentication. It does not provide a blanket privacy or security guarantee. [Server setup](book/src/server/setup.md) explains binding and authentication. No server deployment was tested here.
 
-## Documentation
+Close database users before copying a backup. [Storage and backup](book/src/storage.md) covers the paths, restore procedure and limits. No forward-compatibility or live-file-copy guarantee is established by this review.
 
-The full guide lives at **[olegpustovit.github.io/rssdude](https://olegpustovit.github.io/rssdude)** — install, TUI keybindings, every CLI flag, multi-machine server setup, OPML migration, themes, backup, troubleshooting.
+## More detail
 
-You can also build it locally:
+- [Local fixture and capture](docs/demo/README.md)
+- [Quick start](book/src/quickstart.md)
+- [CLI reference](book/src/cli/reference.md)
+- [TUI keys](book/src/tui/keybindings.md)
+- [Configuration](book/src/config.md)
+- [Contributor guide](AGENTS.md)
 
-```bash
-cargo install mdbook
-mdbook serve book   # http://localhost:3000
-```
-
-## Built with
-
-`tokio`, `native_db` on `redb`, `ratatui`, `axum`, `feed-rs`, `reqwest` (with conditional GETs), `tabled`, `html2text`. Most of the work is done by crates that already exist; the rest is glue.
-
-## Contributing
-
-There's a simplification pipeline in `AGENTS.md`. The short version: no backwards-compatibility shims, prefer a crate over a hand-rolled utility, duplicated logic gets extracted, functions stay under 40 lines. PRs that delete code while keeping behaviour are the most welcome kind.
-
-## License
-
-MIT.
+The previous README declared MIT, but this checkout has no standalone license file or package license declaration. Confirm the intended license before redistribution.

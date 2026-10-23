@@ -20,7 +20,7 @@ build:
 install:
 	cargo install --path . --root $(PREFIX) --force
 	@echo
-	@echo "✅ rssdude installed to $(BIN)"
+	@echo "rssdude installed to $(BIN)"
 	@echo "   make sure $(PREFIX)/bin is on your PATH"
 
 uninstall:

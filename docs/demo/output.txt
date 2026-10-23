@@ -1,0 +1,34 @@
+$ rssdude add http://127.0.0.1:18784/feed.xml --tag demo
+Added feed: Example local feed (http://127.0.0.1:18784/feed.xml)
+Synced 2 items.
+
+$ rssdude items --limit 5
+ID         SOURCE               TITLE                              PUBLISHED 
+ PUvhchR4   Example local feed   Keep the example small             -         
+ YEubob2P   Example local feed   Measure before changing a worker   -
+
+$ rssdude mark YEubob2P --star --read
+Marked "Measure before changing a worker" as read, starred.
+
+$ rssdude starred
+ID         SOURCE               TITLE                              NOTE   PUBLISHED 
+ YEubob2P   Example local feed   Measure before changing a worker          -
+
+$ rssdude sync
+Syncing...
+  Example local feed up to date
+Done. 0 new items.
+
+$ rssdude status
+Feeds: 1
+Items: 2 total, 1 unread, 1 starred
+Last sync: just now
+
+ FEED                 LAST SYNCED   ITEMS   UNREAD 
+ Example local feed   just now      2       1      
+
+Per-folder:
+ FOLDER          FEEDS   UNREAD 
+ Uncategorized   1       1
+
+Only a local fictional RSS feed and disposable database were used.

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel><title>Example local feed</title><link>http://127.0.0.1:18784/</link><description>Fictional items for a local RSSdude demonstration.</description>
+<item><title>Measure before changing a worker</title><guid>example-worker</guid><link>http://127.0.0.1:18784/worker</link><description>A fictional note about keeping a reproducible baseline.</description></item>
+<item><title>Keep the example small</title><guid>example-fixture</guid><link>http://127.0.0.1:18784/fixture</link><description>A fictional note about isolated local fixtures.</description></item>
+</channel></rss>
